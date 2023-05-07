@@ -9,7 +9,19 @@ const app = express();
 
 env.config();
 
-app.use(cors());
+
+const corsOptions ={
+   origin:'*', 
+   credentials:true,            //access-control-allow-credentials:true
+   optionSuccessStatus:200,
+}
+
+app.use(cors(corsOptions)) 
+app.use((req, res, next) => {
+	res.setHeader('Access-Control-Allow-Origin', '*');
+	res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authortization');
+	res.setHeader('Acces-Control-Allow-Methods', 'GET, POST, PATCH, DELETE');
+});
 app.use(bodyParser.json());
 
 const configuration = new Configuration({
@@ -34,7 +46,7 @@ app.post("/chat", async (req, res) => {
 		const response = await openai.createCompletion({
 			model: "text-davinci-003",
 			prompt: `${message}`,
-			max_tokens: 100,
+			max_tokens: 400,
 			temperature: 0.5,
 		});
 		res.json({ message: response.data.choices[0].text });
@@ -103,7 +115,7 @@ app.post("/querry", async (req, res) => {
 		{ role: "assistant", content: "SELECT * FROM users;" },
 		{
 			role: "user",
-			content: `Convert the following natural language description into a SQL query:\n\n${queryDescription}.`,
+			content: `Convert the following natural language description into a SQL query:\n\n${queryDescription}.give sql query only in one line.`,
 		},
 	];
 	
