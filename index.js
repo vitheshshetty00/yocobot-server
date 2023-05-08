@@ -17,11 +17,6 @@ const corsOptions ={
 }
 
 app.use(cors(corsOptions)) 
-app.use((req, res, next) => {
-	res.setHeader('Access-Control-Allow-Origin', '*');
-	res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authortization');
-	res.setHeader('Acces-Control-Allow-Methods', 'GET, POST, PATCH, DELETE');
-});
 app.use(bodyParser.json());
 
 const configuration = new Configuration({
@@ -40,7 +35,9 @@ app.get("/", (req, res) => {
 
 //post route for making requests
 app.post("/chat", async (req, res) => {
+	res.set('Access-Control-Allow-Origin', '*');
 	const { message } = req.body;
+	
 
 	try {
 		const response = await openai.createCompletion({
