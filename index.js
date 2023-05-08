@@ -29,7 +29,7 @@ const openai = new OpenAIApi(configuration);
 app.listen("3080", () => console.log("listening on port 3080"));
 
 // dummy route to test
-app.get("/", (req, res) => {
+app.get("/test", (req, res) => {
 	res.send("Hello World!");
 });
 
